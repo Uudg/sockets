@@ -42,12 +42,10 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('New connection:', socket.id);
 
-    socket.on('message', async (data, room) => {
-        if (!room) return;
+    socket.on('message', async (data) => {
         console.log('New message:', data);
         const message = new Message(data);
         await message.save();
-        socket.to(room).emit('new-message', data);
-        // socket.
+        socket.broadcast.emit('new-message', data);
     });
 });
