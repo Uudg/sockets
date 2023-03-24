@@ -69,14 +69,18 @@ io.on('connection', (socket) => {
     })
 
     socket.on('create-user', async (userName, id) => {
-        const res = await createUser(userName, id)
+        const res = new User({
+            userName,
+            id
+        })
+        await res.save()
         socket.emit('create-user-return', res)
     })
 
     socket.on('message', async (data) => {
         console.log('New message:', data);
-        const message = new Message(data);
-        await message.save();
+        // const message = new Message(data);
+        // await message.save();
         socket.broadcast.emit('new-message', data);
     });
 });
