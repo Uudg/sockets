@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
 
     socket.on('login', async (userName, id) => {
         const res = await setUserOnline(userName, id)
-        socket.emit('return-login', res)
+        socket.to(id).emit('return-login', res)
     })
 
     socket.on('create-user', async (userName, id) => {

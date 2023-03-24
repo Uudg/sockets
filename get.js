@@ -24,6 +24,7 @@ const setOnline = async (userName, id) => {
     }, {
         new: true
     });
+    console.log(user)
     return user
 }
 
