@@ -42,10 +42,10 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('New connection:', socket.id);
 
-    socket.on('message', async (data) => {
+    socket.on('message', data => {
         console.log('New message:', data);
-        const message = new Message(data);
-        await message.save();
-        io.emit('new-message', message);
+        // const message = new Message(data);
+        // await message.save();
+        io.emit('new-message', data);
     });
 });
