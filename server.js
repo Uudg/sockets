@@ -8,12 +8,14 @@ cors = require('cors')
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
-app.use(cors())
+app.use(cors({
+    origin: '*'
+}))
 connectDB();
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-})
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+// })
 
 server.listen(3000, () => {
     console.log('Server started on port 3000');
