@@ -24,10 +24,6 @@ app.use(cors({
     origin: '*'
 }))
 connectDB();
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-// })
 
 server.listen(3000, () => {
     console.log('Server started on port 3000');
@@ -43,6 +39,11 @@ app.get('/asyl', async (req, res) => {
 app.get('/', (req, res) => {
     getAll().then(response => res.send(response))
 })
+
+app.get('/reports', (req, res) => {
+    getAll().then(response => res.send(response))
+})
+
 
 async function getOnline() {
     return await getOnlineUsers()
@@ -79,8 +80,15 @@ io.on('connection', (socket) => {
 
     socket.on('message', async (data) => {
         console.log('New message:', data);
-        // const message = new Message(data);
-        // await message.save();
+        const message = new Message(data);
+        await message.save();
         socket.broadcast.emit('new-message', data);
+    });
+
+    socket.on('report', async (data) => {
+        console.log('New message:', data);
+        const report = new Report(data);
+        await report.save();
+        socket.broadcast.emit('new-report', data);
     });
 });
