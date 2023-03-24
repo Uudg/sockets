@@ -7,12 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
     "dev": "nodemon server",
-    "build": "npm install --save && node server"
+    "build": "npm install --save && npm run start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongoose": "^7.0.2",
     "socket.io": "^4.6.1"
