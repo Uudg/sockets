@@ -3,7 +3,12 @@ const http = require('http');
 const socketIO = require('socket.io');
 const Message = require('./messages');
 const connectDB = require('./db');
-const getAll = require('./get');
+const {
+    getAll,
+    getOnlineUsers,
+    setOnline
+} = require('./get');
+const User = require('./users');
 cors = require('cors')
 const app = express();
 const server = http.createServer(app);
@@ -39,8 +44,34 @@ app.get('/', (req, res) => {
     getAll().then(response => res.send(response))
 })
 
+async function getOnline() {
+    return await getOnlineUsers()
+}
+
+async function setUserOnline(userName, id) {
+    return await setOnline(userName, id)
+}
+
+async function createUser(userName, id) {
+    const user = new User({
+        userName,
+        id
+    })
+    await user.save()
+}
+
 io.on('connection', (socket) => {
     console.log('New connection:', socket.id);
+
+    socket.on('login', async (userName, id) => {
+        const res = await setUserOnline(userName, id)
+        socket.emit('return-login', res)
+    })
+
+    socket.on('create-user', async (userName, id) => {
+        const res = await createUser(userName, id)
+        socket.emit('create-user-return', res)
+    })
 
     socket.on('message', async (data) => {
         console.log('New message:', data);
