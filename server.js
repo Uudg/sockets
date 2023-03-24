@@ -46,6 +46,6 @@ io.on('connection', (socket) => {
         console.log('New message:', data);
         const message = new Message(data);
         await message.save();
-        io.emit('message', message);
+        io.emit('new-message', message);
     });
 });
